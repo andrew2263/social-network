@@ -1,4 +1,7 @@
-import { act } from "react-dom/test-utils";
+const ADD_POST = 'ADD_POST';
+const UPDATE_NEW_POST_TEXT = 'UPDATE_NEW_POST_TEXT';
+const ADD_MESSAGE = 'ADD_MESSAGE';
+const UPDATE_NEW_MESSAGE_TEXT = 'UPDATE_NEW_MESSAGE_TEXT';
 
 let store = {
   _state: {
@@ -25,7 +28,8 @@ let store = {
         { id: 5, name: 'Marina' },
         { id: 6, name: 'Victor' }
       ]
-    }
+    },
+    sidebar: {}
   },
   _callSubscriber() {
     console.log('state has been changed');
@@ -41,7 +45,7 @@ let store = {
       id: 4,
       message: this._state.dialogsPage.newMessageText
     };
-    this._state.dialogsPage.newMessageText = ''
+    this._state.dialogsPage.newMessageText = '';
     this._state.dialogsPage.messages.push(newMessage);
     this._callSubscriber(this._state);
   },
@@ -72,6 +76,16 @@ let store = {
     }
   }
 }
+
+export const addPostActionCreator = () => ( { type: ADD_POST } )
+
+export const updateNewPostTextActionCreator = (newText) =>
+  ( { type: UPDATE_NEW_POST_TEXT, newText: newText } )
+
+export const addMessageActionCreator = () => ( { type: ADD_MESSAGE } )
+
+export const updateNewMessageTextActionCreator = (newText) =>
+  ({ type: UPDATE_NEW_MESSAGE_TEXT, newText: newText })
 
 export default store;
 
