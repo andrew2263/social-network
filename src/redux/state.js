@@ -1,4 +1,6 @@
-import { rerenderEntireTree } from '../render';
+let rerenderEntireTree = () => {
+  console.log('state has been changed');
+};
 
 let state = {
   profilePage: {
@@ -24,59 +26,44 @@ let state = {
       { id: 5, name: 'Marina' },
       { id: 6, name: 'Victor' }
     ]
-  },
-  addPost: () => {
-    let newPost = {
-      id: 5,
-      message: state.profilePage.newPostText,
-      likesCount: 0
-    };
-
-    state.profilePage.posts.push(newPost);
-    state.profilePage.newPostText = '';
-    rerenderEntireTree(state);
-  },
-  updateNewPostText: (newText) => {
-    state.profilePage.newPostText = newText;
-    rerenderEntireTree(state);
-  },
-  addMessage: () => {
-    let newMessage = {
-      id: 4,
-      message: state.dialogsPage.newMessageText
-    };
-  
-    state.dialogsPage.messages.push(newMessage);
-    state.dialogsPage.newMessageText = '';
-    rerenderEntireTree(state);
-  },
-  updateNewMessageText: (newText) => {
-    state.dialogsPage.newMessageText = newText;
-    rerenderEntireTree(state);
   }
 };
-/*
-export let addPost = (postMessage) => {
+
+export const addPost = (postMessage) => {
   let newPost = {
     id: 5,
-    message: postMessage,
+    message: state.profilePage.newPostText,
     likesCount: 0
   };
 
-  rerenderEntireTree(state);
-
   state.profilePage.posts.push(newPost);
+  state.profilePage.newPostText = '';
+  rerenderEntireTree(state);
 };
 
-export let addMessage = (messageText) => {
+export const updateNewPostText = (newText) => {
+  state.profilePage.newPostText = newText;
+  rerenderEntireTree(state);
+};
+
+export const addMessage = (messageText) => {
   let newMessage = {
     id: 4,
-    message: messageText
+    message: state.dialogsPage.newMessageText
   };
 
-  rerenderEntireTree(state);
-
+  state.dialogsPage.newMessageText = ''
   state.dialogsPage.messages.push(newMessage);
-}
-*/
+  rerenderEntireTree(state);
+};
+
+export const updateNewMessageText = (newText) => {
+  state.dialogsPage.newMessageText = newText;
+  rerenderEntireTree(state);
+};
+
+export const subscribe = (observer) => {
+  rerenderEntireTree = observer;
+};
+
 export default state;
