@@ -1,3 +1,5 @@
+import { act } from "react-dom/test-utils";
+
 let store = {
   _state: {
     profilePage: {
@@ -25,27 +27,16 @@ let store = {
       ]
     }
   },
-  getState() {
-    return this._state;
-  },
   _callSubscriber() {
     console.log('state has been changed');
   },
-  addPost() {
-    let newPost = {
-      id: 5,
-      message: this._state.profilePage.newPostText,
-      likesCount: 0
-    };  
-    this._state.profilePage.posts.push(newPost);
-    this._state.profilePage.newPostText = '';
-    this._callSubscriber(this._state);
+  getState() {
+    return this._state;
   },
-  updateNewPostText(newText) {
-    this._state.profilePage.newPostText = newText;
-    this._callSubscriber(this._state);
+  subscribe(observer) {
+    this._callSubscriber = observer;
   },
-  addMessage() {
+  _addMessage() {
     let newMessage = {
       id: 4,
       message: this._state.dialogsPage.newMessageText
@@ -54,12 +45,31 @@ let store = {
     this._state.dialogsPage.messages.push(newMessage);
     this._callSubscriber(this._state);
   },
-  updateNewMessageText(newText) {
+  _updateNewMessageText(newText) {
     this._state.dialogsPage.newMessageText = newText;
     this._callSubscriber(this._state);
   },
-  subscribe(observer) {
-    this._callSubscriber = observer;
+  dispatch(action) {
+    if (action.type === 'ADD_POST') {
+      let newPost = {
+        id: 5,
+        message: this._state.profilePage.newPostText,
+        likesCount: 0
+      };  
+      this._state.profilePage.posts.push(newPost);
+      this._state.profilePage.newPostText = '';
+      this._callSubscriber(this._state);
+    }
+    if (action.type === 'UPDATE_NEW_POST_TEXT') {
+      this._state.profilePage.newPostText = action.newText;
+      this._callSubscriber(this._state);
+    }
+    if (action.type === 'ADD_MESSAGE') {
+      this._addMessage();
+    }
+    if (action.type === 'UPDATE_NEW_MESSAGE_TEXT') {
+      this._updateNewMessageText(action.newText)
+    }
   }
 }
 
