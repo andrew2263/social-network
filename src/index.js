@@ -9,7 +9,7 @@ import { Provider } from 'react-redux';
 
 ReactDOM.render(
   <BrowserRouter>
-    <Provider store={ store }>
+    <Provider store={ store }> { /* вызов компонента Provider делает store доступным для передачи в другие компоненты (контейнеры) */ }
       <App />
     </Provider>
   </BrowserRouter>,
